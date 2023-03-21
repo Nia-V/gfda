@@ -2,19 +2,21 @@
 #define IR_RECEIVE_PIN 9
 #include <IRremote.hpp>
 #include"Motorclass.h"
+#include"Display4.h"
  unsigned long res;
 unsigned long fres;
-
-Car Car;
-
+int D1 = A1;
+int D2 = A5;
+int D3 = A4;
+int D4 = A0;
 int latch = 10; 
 int clock = 12; 
 int data= 13; 
 
-int D1 = A0;
-int D2 = A5;
-int D3 = A1;
-int D4 = A4;
+Car Car;
+SevSeg my7(D1, D2, D3, D4, latch, clock, data);
+
+
 Servo myservo; 
 int delta;
 int modul = 0;
@@ -48,71 +50,17 @@ const byte table[10]=
 };
 
 
-void Display4(int num, int num1, int num2, int num3){   
- 
-
-
-    digitalWrite(D2, 1);
-    digitalWrite(D3, 1);
-    digitalWrite(D4, 1);
-    digitalWrite(D1, 0);
-      digitalWrite(latch, 0);
-    shiftOut(data, clock, LSBFIRST, table[num3]);
-           digitalWrite(latch, 1);
-
-
-
-digitalWrite(D1, 1);
-    digitalWrite(D3, 1);
-    digitalWrite(D4, 1);
-    digitalWrite(D2, 0);
-      digitalWrite(latch, 0);
-    shiftOut(data, clock, LSBFIRST, table[num2]);
-           digitalWrite(latch, 1);
-
-
-digitalWrite(D1, 1);
-    digitalWrite(D2, 1);
-    digitalWrite(D4, 1);
-    digitalWrite(D3, 0);
-      digitalWrite(latch, 0);
-    shiftOut(data, clock, LSBFIRST, table[num1]);
-           digitalWrite(latch, 1);
-  
-
-digitalWrite(D1, 1);
-    digitalWrite(D2, 1);
-    digitalWrite(D3, 1);
-    digitalWrite(D4, 0);
-      digitalWrite(latch, 0);
-    shiftOut(data, clock, LSBFIRST, table[num]);
-           digitalWrite(latch, 1);
-
-
-
-    digitalWrite(D4, 1);
-       digitalWrite(D3, 1);
-           digitalWrite(D2, 1);
-                       digitalWrite(D1, 1);
-    
-}
 
 void setup()
 {
 Serial.begin(9600);
   IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); // Start the receiver
    myservo.attach(11);
-   pinMode(latch, OUTPUT);
-    pinMode(clock, OUTPUT);
-    pinMode(data, OUTPUT);
-     pinMode(D1, OUTPUT);
-    pinMode(D2, OUTPUT);
-    pinMode(D3, OUTPUT);
-     pinMode(D4, OUTPUT);
+  my7.init();
 }
 
 void loop() {
-  
+  my7.display(x,y,z,a);
   if (IrReceiver.decode()) {
     res = IrReceiver.decodedIRData.decodedRawData; // Print "old" raw data
       IrReceiver.resume(); // Enable receiving of the next value
@@ -241,16 +189,14 @@ switch (fres) {       // if results.value is equal to....
         Serial.println("^^");
         ri = 1;
         le = 0;
-        s= 0;
         break;  
     case 4161273600:
         Serial.println("vv");
         ri = 0;
         le = 1;
-        s= 0;
         break; 
 }}
-if (s == 0){
+
   if (r == 1) {  //if r is equal to 1
       Car.Right(50);  //Move right at speed 100
     }
@@ -269,15 +215,12 @@ if (s == 0){
      }
      if(le == 1 && ri ==0){
     Serial.println("le");
-    servo = 0;
-     }
-}
-    else if (s ==1){
+    servo = 0;}
+  if (s ==1){
       Car.STOP();
       servo = 90;
-Serial.println("stop");
-    }
-Display4 (z, y, a ,x );
+Serial.println("stop");}
+
   myservo.write(servo);
 
   if (modul != 0) {
