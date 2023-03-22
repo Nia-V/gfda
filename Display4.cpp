@@ -43,13 +43,8 @@ void SevSeg::display(int x, int y, int z, int a){
       digitalWrite(latch, 0);
     shiftOut(data, clock, LSBFIRST, table[x]);
            digitalWrite(latch, 1);
+        digitalWrite(D1, 1);
 
-
-      digitalWrite(latch, 0);      
-digitalWrite(D1, 0);
-    digitalWrite(D2, 0);
-    digitalWrite(D3, 0);
-    digitalWrite(D4, 0);
 
 digitalWrite(D1, 1);
     digitalWrite(D3, 1);
@@ -58,13 +53,9 @@ digitalWrite(D1, 1);
       digitalWrite(latch, 0);
     shiftOut(data, clock, LSBFIRST, table[y]);
            digitalWrite(latch, 1);
+        digitalWrite(D2, 1);
 
 
-      digitalWrite(latch, 0);      
-digitalWrite(D1, 0);
-    digitalWrite(D2, 0);
-    digitalWrite(D3, 0);
-    digitalWrite(D4, 0);
 
 digitalWrite(D1, 1);
     digitalWrite(D2, 1);
@@ -73,12 +64,9 @@ digitalWrite(D1, 1);
       digitalWrite(latch, 0);
     shiftOut(data, clock, LSBFIRST, table[z]);
            digitalWrite(latch, 1);
+        digitalWrite(D3, 1);
 
-  digitalWrite(latch, 0);      
-digitalWrite(D1, 0);
-    digitalWrite(D2, 0);
-    digitalWrite(D3, 0);
-    digitalWrite(D4, 0);
+
 
 digitalWrite(D1, 1);
     digitalWrite(D2, 1);
@@ -87,11 +75,6 @@ digitalWrite(D1, 1);
       digitalWrite(latch, 0);
     shiftOut(data, clock, LSBFIRST, table[a]);
            digitalWrite(latch, 1);
-
-      digitalWrite(latch, 0);      
-digitalWrite(D1, 0);
-    digitalWrite(D2, 0);
-    digitalWrite(D3, 0);
-    digitalWrite(D4, 0);
+    digitalWrite(D4, 1);
 
 }
